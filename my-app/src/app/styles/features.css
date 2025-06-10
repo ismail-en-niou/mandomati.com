@@ -1,0 +1,12 @@
+.perspective {
+  perspective: 1000px;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
