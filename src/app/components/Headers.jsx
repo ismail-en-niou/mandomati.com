@@ -54,7 +54,7 @@ const Header = () => {
     [0.2, 0.8]
   );
 
-  const menuItems = ['Features', 'Solutions', 'Pricing', 'Contact'];
+  const menuItems = ['Features', 'whyDigital', 'Pricing','Team' , 'Contact'];
 
   return (
     <motion.header 
@@ -80,8 +80,8 @@ const Header = () => {
           >
             <motion.div 
               className="relative w-10 h-10"
-              whileHover={{ rotate: 180 }}
-              transition={{ duration: 0.5 }}
+              whileHover={{ rotate: 360 }}
+              transition={{ duration: 0.9 }}
             >
               <motion.div 
                 className="absolute inset-0 bg-white rounded-xl"
@@ -90,7 +90,7 @@ const Header = () => {
                   scale: [1, 1.1, 1]
                 }}
                 transition={{ 
-                  duration: 10,
+                  duration: 100,
                   repeat: Infinity,
                   ease: "linear"
                 }}

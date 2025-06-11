@@ -1,11 +1,13 @@
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useRef, useState } from 'react';
+import SplitText from './ui/split';
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
+  const { scrollY } = useScroll();
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
@@ -23,15 +25,15 @@ const Hero = () => {
   });
 
   // Transform values based on scroll
-  const y = useTransform(smoothProgress, [0, 1], [0, 200]);
+  const y = useTransform(smoothProgress, [0, 1], [0, -200]);
   const scale = useTransform(smoothProgress, [0, 1], [1, 0.8]);
   const opacity = useTransform(smoothProgress, [0, 0.8], [1, 0]);
   const rotate = useTransform(smoothProgress, [0, 1], [0, 360]);
-  
+   const ximg = useTransform(scrollY, [0, 500], [-100, 0]);
   // 3D effects
-  const rotateX = useTransform(smoothProgress, [0, 1.5], [0, 25]);
-  const rotateY = useTransform(smoothProgress, [0, 0.5], [0, 50]);
-  const translateZ = useTransform(smoothProgress, [0, 0.5], [0, -100]);
+  const rotateX = useTransform(smoothProgress, [0, 1.5], [0, 10]);
+  const rotateY = useTransform(smoothProgress, [0, 0.5], [0, -20]);
+  const translateZ = useTransform(smoothProgress, [0, 0.5], [0, 300]);
 
   // Mouse parallax effect
   useEffect(() => {
@@ -108,14 +110,18 @@ const Hero = () => {
                   Future
                 </motion.span>
                 <br />
-                <motion.span
-                  initial={{ opacity: 0, rotateX: 90 }}
-                  animate={{ opacity: 1, rotateX: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="inline-block text-blue-500"
-                >
-                  of Education
-                </motion.span>
+                <SplitText
+                  text="of Education"
+                  className="text-blue-500"
+                  delay={100}
+                  duration={0.6}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  rootMargin="-100px"
+                  textAlign="center" onLetterAnimationComplete={undefined}              />
               </motion.h1>
 
               <motion.div 
@@ -179,6 +185,7 @@ const Hero = () => {
           <motion.div 
             className="lg:w-1/2 perspective-1000"
             style={{ 
+              y : ximg,
               scale,
               rotateX,
               rotateY,
@@ -197,7 +204,7 @@ const Hero = () => {
                 src="/dashboard-preview.png"
                 alt="Dashboard Preview"
                 className="w-full h-auto"
-                initial={{ opacity: 0 }}
+                initial={{ opacity: 0}}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
               />

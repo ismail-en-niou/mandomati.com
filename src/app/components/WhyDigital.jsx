@@ -1,5 +1,8 @@
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import TrueFocus from './ui/TrueFocus';
+import CountUp from './ui/CountUp';
+
 
 const WhyDigital = () => {
   const containerRef = useRef(null);
@@ -43,6 +46,7 @@ const WhyDigital = () => {
 
   return (
     <section 
+      id="whydigital"
       ref={containerRef} 
       className="relative min-h-screen bg-[#0A0A0A] text-white overflow-hidden"
     >
@@ -74,17 +78,15 @@ const WhyDigital = () => {
               Built for the Future
             </span>
           </motion.div>
-
-          <motion.h1 
-            className="text-5xl md:text-7xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            The Next Generation
-            <br />
-            <span className="text-blue-500">School Management</span>
-          </motion.h1>
+          
+            <TrueFocus 
+            sentence="The Next Generation"
+            manualMode={false}
+            blurAmount={5}
+            borderColor="red"
+            animationDuration={2}
+            pauseBetweenAnimations={1}
+            />
 
           <motion.p
             className="text-lg md:text-xl text-gray-400 max-w-2xl mb-12"
@@ -178,12 +180,15 @@ const WhyDigital = () => {
               transition={{ delay: index * 0.2 }}
               className="text-center"
             >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600"
-              >
-                {stat.value}
-              </motion.div>
+              
+              <CountUp
+              from={0}
+              to={stat.value}
+              separator=","
+              direction="up"
+              duration={1}
+              className="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600"
+              />
               <div className="text-gray-400 text-sm">{stat.label}</div>
             </motion.div>
           ))}

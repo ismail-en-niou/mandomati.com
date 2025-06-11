@@ -101,6 +101,7 @@ const TeamSection = () => {
 
   return (
     <section 
+    id='team'
       ref={containerRef} 
       className="relative min-h-screen bg-white py-24 overflow-hidden"
     >
@@ -137,7 +138,7 @@ const TeamSection = () => {
             Building the future of education technology
           </motion.p>
         </motion.div>
-
+        
         {/* Team Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {teamMembers.map((member, index) => (
