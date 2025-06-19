@@ -29,7 +29,7 @@ const Hero = () => {
   const scale = useTransform(smoothProgress, [0, 1], [1, 0.8]);
   const opacity = useTransform(smoothProgress, [0, 0.8], [1, 0]);
   const rotate = useTransform(smoothProgress, [0, 1], [0, 360]);
-   const ximg = useTransform(scrollY, [0, 500], [-100, 0]);
+   const ximg = useTransform(scrollY, [0, 500], [50, 0]);
   // 3D effects
   const rotateX = useTransform(smoothProgress, [0, 1.5], [0, 10]);
   const rotateY = useTransform(smoothProgress, [0, 0.5], [0, -20]);
