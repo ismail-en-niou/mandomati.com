@@ -32,7 +32,7 @@ const SmoothScrollNav = () => {
   const sections = ['hero', 'features', 'testimonials', 'pricing', 'cta'];
   const [activeSection, setActiveSection] = useState(0);
 
-  const scrollTo = (index) => { // Removed TypeScript type annotation
+  const scrollTo = (index) => {
     const element = document.getElementById(sections[index]);
     element?.scrollIntoView({ behavior: 'smooth' });
     setActiveSection(index);
@@ -88,12 +88,11 @@ const ScrollProgress = () => {
   );
 };
 
-function App() {
+export default function Page() {  // Changed from App to Page
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
   const [isLoading, setIsLoading] = useState(true);
 
-  // Loading animation
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
@@ -119,7 +118,7 @@ function App() {
 
       <motion.div 
         ref={containerRef}
-        className="overflow-x-hidden relative "
+        className="overflow-x-hidden relative"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 1.5 }}
@@ -131,7 +130,7 @@ function App() {
         <Header />
         
         <motion.main>
-          {['hero', 'features', 'whyDigital', 'impact' ,'testimonials', 'pricing','TeamSection' , 'cta'].map((sectionId, index) => (
+          {['hero', 'features', 'whyDigital', 'impact', 'testimonials', 'pricing', 'TeamSection', 'cta'].map((sectionId, index) => (
             <motion.section
               key={sectionId}
               id={sectionId}
@@ -188,5 +187,3 @@ function App() {
     </>
   );
 }
-
-export default App;

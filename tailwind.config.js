@@ -9,13 +9,13 @@ const config = {
           DEFAULT: '#4F46E5',
           dark: '#4338CA',
           'blue': {
-          500: '#3B82F6',
-          600: '#2563EB',
-          700: '#1D4ED8',
-        },
+            500: '#3B82F6',
+            600: '#2563EB',
+            700: '#1D4ED8',
+          },
         },
         perspective: {
-        '1000': '1000px',
+          '1000': '1000px',
         },
         secondary: {
           DEFAULT: '#10B981',
@@ -47,17 +47,13 @@ const config = {
       transitionTimingFunction: {
         'spring': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
-       backdropFilter: {
+      backdropFilter: {
         'none': 'none',
         'blur': 'blur(4px)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         arabic: ['Noto Sans Arabic', 'sans-serif'],
-      },
-      backdropFilter: {
-        'none': 'none',
-        'blur': 'blur(8px)',
       },
       animation: {
         'gradient': 'gradient 8s linear infinite',
@@ -79,7 +75,7 @@ const config = {
       },
     },
   },
-  plugins: ["@tailwindcss/postcss"],
+  plugins: [],
 };
 
 export default config;

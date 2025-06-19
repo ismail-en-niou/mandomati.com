@@ -7,8 +7,8 @@ const SPRING_TRANSITION = {
   damping: 30
 };
 
-// Apps Script Web App URL (replace with your deployed URL)
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxg_Y3D4GMqIB0Pho5atigF3BJF0RV0wCePNafz2O8MPEdONbv6O3dFpIHy1GwSnke/exec';
+// Registration API URL
+const REGISTER_API_URL = 'https://iamms.mandomati.com/api/auth/register';
 
 const MenuItem = ({ item, index }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -55,44 +55,148 @@ const MenuItem = ({ item, index }) => {
   );
 };
 
-// Sign In Modal Component with Google Apps Script
+// Success/Error Message Component
+const MessageAlert = ({ message, type, onClose }) => {
+  if (!message) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className={`mb-4 p-4 rounded-lg border ${
+        type === 'success' 
+          ? 'bg-green-900/50 border-green-500 text-green-200' 
+          : 'bg-red-900/50 border-red-500 text-red-200'
+      }`}
+    >
+      <div className="flex justify-between items-start">
+        <p className="text-sm">{message}</p>
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-white ml-4"
+        >
+          ✕
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
+// Sign Up Modal Component with better error handling
 const SignInModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstname: '',
+    lastname: '',
     email: '',
-    phone: '',
-    company: '',
-    message: ''
+    username: '',
+    password: '',
+    address: '',
+    birthDate: '',
+    city: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+
+  const clearMessage = () => {
+    setMessage('');
+    setMessageType('');
+  };
+
+  const showMessage = (msg, type) => {
+    setMessage(msg);
+    setMessageType(type);
+    // Auto-clear success messages after 3 seconds
+    if (type === 'success') {
+      setTimeout(() => {
+        clearMessage();
+      }, 3000);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    clearMessage();
     
     try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      const registrationData = {
+        username: formData.email, // Using email as username
+        lastname: formData.lastname,
+        firstname: formData.firstname,
+        email: formData.email,
+        role: {
+          id: 1,
+          name: "ROOT"
+        },
+        password: formData.password,
+        status: true,
+        address: formData.address || "123, Rue des Codeurs", // Default address if empty
+        birthDate: formData.birthDate || "2000-05-15", // Default birth date if empty
+        city: formData.city,
+        createdAt: new Date().toISOString()
+      };
+
+      const response = await fetch(REGISTER_API_URL, {
         method: 'POST',
-        mode: 'no-cors', // Important for Google Apps Script
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          type: 'reserve_call',
-          timestamp: new Date().toISOString(),
-        }),
+        body: JSON.stringify(registrationData),
       });
 
-      // Since we're using no-cors mode, we can't read the response
-      // But if no error is thrown, we assume success
-      alert('Call reservation submitted successfully! We will contact you within 24 hours.');
-      onClose();
-      setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+      // Handle different response types
+      let responseData;
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType && contentType.includes('application/json')) {
+        responseData = await response.json();
+      } else {
+        responseData = await response.text();
+      }
+
+      if (response.ok) {
+        // Success
+        showMessage('Registration successful! Welcome to Mandomati.', 'success');
+        setTimeout(() => {
+          onClose();
+          setFormData({
+            firstname: '',
+            lastname: '',
+            email: '',
+            username: '',
+            password: '',
+            address: '',
+            birthDate: '',
+            city: ''
+          });
+          clearMessage();
+        }, 2000);
+      } else {
+        // Error handling based on status code
+        let errorMessage = '';
+        
+        switch (response.status) {
+          case 409:
+            errorMessage = typeof responseData === 'string' ? responseData : 'User already exists with this email address.';
+            break;
+          case 400:
+            errorMessage = typeof responseData === 'string' ? responseData : 'Invalid registration data. Please check your information.';
+            break;
+          case 500:
+            errorMessage = 'Server error. Please try again later.';
+            break;
+          default:
+            errorMessage = typeof responseData === 'string' ? responseData : 'Registration failed. Please try again.';
+        }
+        
+        showMessage(errorMessage, 'error');
+      }
       
     } catch (error) {
-      console.error('Submit error:', error);
-      alert('Failed to submit reservation. Please try again.');
+      console.error('Registration error:', error);
+      showMessage('Network error. Please check your connection and try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -113,11 +217,11 @@ const SignInModal = ({ isOpen, onClose }) => {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.8, opacity: 0 }}
-          className="bg-gray-900 rounded-2xl p-8 max-w-md w-full border border-white/10"
+          className="bg-gray-900 rounded-2xl p-8 max-w-md w-full border border-white/10 max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold text-white">Reserve a Call</h3>
+            <h3 className="text-2xl font-bold text-white">Create Account</h3>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-white transition-colors"
@@ -127,17 +231,36 @@ const SignInModal = ({ isOpen, onClose }) => {
             </button>
           </div>
 
+          <MessageAlert 
+            message={message} 
+            type={messageType} 
+            onClose={clearMessage}
+          />
+
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <input
-                type="text"
-                placeholder="Your Name *"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-                disabled={isSubmitting}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none disabled:opacity-50"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="text"
+                  placeholder="First Name *"
+                  value={formData.firstname}
+                  onChange={(e) => setFormData({ ...formData, firstname: e.target.value })}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none disabled:opacity-50"
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Last Name *"
+                  value={formData.lastname}
+                  onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none disabled:opacity-50"
+                />
+              </div>
             </div>
 
             <div>
@@ -154,10 +277,12 @@ const SignInModal = ({ isOpen, onClose }) => {
 
             <div>
               <input
-                type="tel"
-                placeholder="Phone Number"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                type="password"
+                placeholder="Password *"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+                minLength="6"
                 disabled={isSubmitting}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none disabled:opacity-50"
               />
@@ -166,22 +291,34 @@ const SignInModal = ({ isOpen, onClose }) => {
             <div>
               <input
                 type="text"
-                placeholder="Company (Optional)"
-                value={formData.company}
-                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                placeholder="City *"
+                value={formData.city}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                required
                 disabled={isSubmitting}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none disabled:opacity-50"
               />
             </div>
 
             <div>
-              <textarea
-                placeholder="Tell us about your needs..."
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                rows={3}
+              <input
+                type="text"
+                placeholder="Address (Optional)"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 disabled={isSubmitting}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none resize-none disabled:opacity-50"
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none disabled:opacity-50"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Birth Date (Optional)</label>
+              <input
+                type="date"
+                value={formData.birthDate}
+                onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none disabled:opacity-50"
               />
             </div>
 
@@ -192,12 +329,12 @@ const SignInModal = ({ isOpen, onClose }) => {
               whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
               className="w-full py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Submitting...' : 'Reserve My Call'}
+              {isSubmitting ? 'Creating Account...' : 'Create Account'}
             </motion.button>
           </form>
 
           <p className="text-gray-400 text-sm mt-4 text-center">
-            We'll contact you within 24 hours to schedule your demo call.
+            By creating an account, you agree to our Terms of Service and Privacy Policy.
           </p>
         </motion.div>
       </motion.div>
@@ -220,19 +357,8 @@ const ContactForm = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     
     try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          type: 'contact',
-          timestamp: new Date().toISOString(),
-        }),
-      });
-
+      // You can replace this with a contact API endpoint if needed
+      console.log('Contact form submitted:', formData);
       alert('Message sent successfully!');
       onClose();
       setFormData({ name: '', email: '', subject: '', message: '' });
@@ -340,7 +466,7 @@ const ContactForm = ({ isOpen, onClose }) => {
 };
 
 const Header = () => {
-  const [currentDateTime] = useState("2025-06-19 09:07:40");
+  const [currentDateTime] = useState("2025-06-19 14:48:02");
   const [currentUser] = useState("ismail-en-niou");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
@@ -453,7 +579,7 @@ const Header = () => {
                 whileTap={{ scale: 0.95 }}
                 className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"
               >
-                Sign In
+                Sign Up
               </motion.button>
 
               <motion.button
@@ -509,9 +635,8 @@ const Header = () => {
                 className="md:hidden py-4"
               >
                 {menuItems.map((item, index) => (
-                  <motion.a
+                  <motion.div
                     key={item}
-                    href={`#${item.toLowerCase()}`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
@@ -520,7 +645,7 @@ const Header = () => {
                     onClick={() => handleMenuItemClick(item)}
                   >
                     {item}
-                  </motion.a>
+                  </motion.div>
                 ))}
               </motion.div>
             )}
