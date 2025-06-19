@@ -1,43 +1,47 @@
-const Footer = () => {
+const PiedDePage = () => {
+  // Informations système
+  const dateHeureActuelle = "2025-06-19 10:50:44";
+  const utilisateurActuel = "ismail-en-niou";
+
   return (
     <footer className="bg-gray-900 text-gray-400 py-12">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-white text-xl font-bold mb-4">Mandomati</h3>
-            <p className="mb-4">Empowering Moroccan schools with modern management solutions.</p>
-            <p>© {new Date().getFullYear()} Mandomati. All rights reserved.</p>
+            <p className="mb-4">Permettre aux écoles marocaines d'utiliser des solutions de gestion modernes.</p>
+            <p>© {new Date().getFullYear()} Mandomati. Tous droits réservés.</p>
           </div>
           <div>
-            <h4 className="text-white text-lg font-medium mb-4">Product</h4>
+            <h4 className="text-white text-lg font-medium mb-4">Produit</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Updates</a></li>
+              <li><a href="#fonctionnalites" className="hover:text-white transition-colors">Fonctionnalités</a></li>
+              <li><a href="#tarifs" className="hover:text-white transition-colors">Tarifs</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Intégrations</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Mises à jour</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-white text-lg font-medium mb-4">Company</h4>
+            <h4 className="text-white text-lg font-medium mb-4">Entreprise</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">À propos</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Carrières</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+              <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-white text-lg font-medium mb-4">Legal</h4>
+            <h4 className="text-white text-lg font-medium mb-4">Légal</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Confidentialité</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Conditions</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Sécurité</a></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <p>Made with ❤️ in Morocco</p>
+            <p>Fait avec ❤️ au Maroc</p>
           </div>
           <div className="flex space-x-6">
             <a href="#" className="hover:text-white transition-colors">
@@ -65,4 +69,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default PiedDePage;

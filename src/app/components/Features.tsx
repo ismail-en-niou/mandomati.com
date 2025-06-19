@@ -1,42 +1,50 @@
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useRef } from 'react';
+import { 
+  GraduationCap, 
+  ClipboardCheck, 
+  BarChart3, 
+  Clock, 
+  Users, 
+  Shield 
+} from 'lucide-react';
 
 const features = [
   {
-    title: "Student Management",
-    description: "Easily manage student records, enrollment, and progression through grades.",
-    icon: "👨‍🎓",
+    title: "Gestion des Étudiants",
+    description: "Gérez facilement les dossiers des étudiants, les inscriptions et la progression à travers les niveaux.",
+    Icon: GraduationCap,
     gradient: "from-blue-500 to-cyan-500"
   },
   {
-    title: "Attendance Tracking",
-    description: "Automated attendance system with real-time notifications to parents.",
-    icon: "📝",
+    title: "Suivi de Présence",
+    description: "Système de présence automatisé avec notifications en temps réel aux parents.",
+    Icon: ClipboardCheck,
     gradient: "from-purple-500 to-pink-500"
   },
   {
-    title: "Gradebook",
-    description: "Comprehensive gradebook with analytics and report card generation.",
-    icon: "📊",
+    title: "Carnet de Notes",
+    description: "Carnet de notes complet avec analyses et génération de bulletins scolaires.",
+    Icon: BarChart3,
     gradient: "from-green-500 to-emerald-500"
   },
   {
-    title: "Timetable Scheduling",
-    description: "Smart scheduling that avoids conflicts and optimizes resource allocation.",
-    icon: "⏰",
+    title: "Planification d'Emploi du Temps",
+    description: "Planification intelligente qui évite les conflits et optimise l'allocation des ressources.",
+    Icon: Clock,
     gradient: "from-orange-500 to-yellow-500"
   },
   {
-    title: "Parent Portal",
-    description: "Secure portal for parents to monitor their children's progress and school activities.",
-    icon: "👪",
+    title: "Portail Parents",
+    description: "Portail sécurisé pour que les parents surveillent les progrès de leurs enfants et les activités scolaires.",
+    Icon: Users,
     gradient: "from-red-500 to-rose-500"
   },
   {
-    title: "Data Security",
-    description: "Bank-level encryption and regular backups to protect sensitive information.",
-    icon: "🔒",
+    title: "Sécurité des Données",
+    description: "Chiffrement de niveau bancaire et sauvegardes régulières pour protéger les informations sensibles.",
+    Icon: Shield,
     gradient: "from-indigo-500 to-violet-500"
   }
 ];
@@ -50,9 +58,9 @@ const FeatureCard = ({ feature, index }) => {
   const cardVariants = {
     hidden: { 
       opacity: 0,
-      y: 50,
-      scale: 0.9,
-      rotateX: -15
+      y: 0,
+      scale: 0,
+      rotateX: -1
     },
     visible: { 
       opacity: 1,
@@ -61,6 +69,8 @@ const FeatureCard = ({ feature, index }) => {
       rotateX: 0
     }
   };
+
+  const IconComponent = feature.Icon;
 
   return (
     <motion.div
@@ -87,17 +97,19 @@ const FeatureCard = ({ feature, index }) => {
         {/* Icon with floating animation */}
         <motion.div
           animate={{
-            y: [0, -10, 0],
-            rotate: [0, 5, 0]
+            y: [0, -1, 0],
+            rotate: [0, 0, 0]
           }}
           transition={{
             duration: 4,
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="text-5xl mb-6 transform-gpu"
+          className="mb-6 transform-gpu"
         >
-          {feature.icon}
+          <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-r ${feature.gradient} bg-opacity-10`}>
+            <IconComponent className="w-6 h-6" />
+          </div>
         </motion.div>
 
         {/* Content */}
@@ -111,7 +123,7 @@ const FeatureCard = ({ feature, index }) => {
           whileHover={{ scaleX: 1 }}
           transition={{ duration: 0.3 }}
           style={{
-            background: `linear-gradient(to right, ${feature.gradient.replace('from-', '').replace('to-', '')})`
+            background: `linear-gradient(to right, rgb(59 130 246), rgb(6 182 212))`
           }}
         />
       </div>
@@ -119,7 +131,7 @@ const FeatureCard = ({ feature, index }) => {
   );
 };
 
-const Features = () => {
+const FeaturesSection = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -133,6 +145,7 @@ const Features = () => {
   return (
     <section 
       ref={containerRef}
+      id="features"
       className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden"
     >
       {/* Background Elements */}
@@ -141,8 +154,8 @@ const Features = () => {
         style={{
           background: "radial-gradient(circle at 50% 50%, #000 1px, transparent 1px)",
           backgroundSize: "50px 50px",
-          scale,
-          opacity
+          scale: scale,
+          opacity: opacity
         }}
       />
 
@@ -164,13 +177,13 @@ const Features = () => {
             className="w-20 h-1 bg-black mx-auto mb-6"
           />
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            <span className="inline-block">Powerful Features for</span>{' '}
+            <span className="inline-block">Fonctionnalités Puissantes pour les</span>{' '}
             <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
-              Modern Schools
+              Écoles Modernes
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Everything you need to efficiently manage your school operations in one integrated platform.
+            Tout ce dont vous avez besoin pour gérer efficacement les opérations de votre école dans une plateforme intégrée.
           </p>
         </motion.div>
         
@@ -193,7 +206,7 @@ const Features = () => {
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 bg-black text-white rounded-full font-medium hover:shadow-xl transition-shadow"
           >
-            Explore All Features
+            Explorer Toutes les Fonctionnalités
           </motion.button>
         </motion.div>
       </motion.div>
@@ -201,4 +214,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default FeaturesSection;

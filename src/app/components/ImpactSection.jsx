@@ -1,65 +1,107 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { 
+  School, 
+  GraduationCap, 
+  Star, 
+  Headphones, 
+  TrendingUp,
+  MapPin
+} from 'lucide-react';
 
-const ImpactSection = () => {
-  const containerRef = useRef(null);
+const SectionImpact = () => {
+  const conteneurRef = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: conteneurRef,
     offset: ["start end", "end start"]
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0]);
+  const opacite = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0]);
 
-  // System Info
-  const currentDateTime = "2025-06-10 11:17:47";
-  const currentUser = "ismail-en-niou";
+  // Informations Système
+  const dateHeureActuelle = "2025-06-19 10:47:47";
+  const utilisateurActuel = "ismail-en-niou";
 
-  const successStories = [
+  const histoiresSucces = [
     {
-      name: "Royal Academy",
-      location: "Casablanca",
-      metric: "47%",
-      description: "Increase in student performance",
+      nom: "Académie Royale",
+      localisation: "Casablanca",
+      metrique: "47%",
+      description: "Augmentation des performances étudiantes",
       gradient: "from-blue-600 to-cyan-500",
-      bgClass: "bg-blue-50"
+      classBg: "bg-blue-50",
+      couleurIcone: "text-blue-600",
+      icone: TrendingUp
     },
     {
-      name: "International School",
-      location: "Rabat",
-      metric: "85%",
-      description: "Reduction in administrative work",
+      nom: "École Internationale",
+      localisation: "Rabat",
+      metrique: "85%",
+      description: "Réduction du travail administratif",
       gradient: "from-violet-600 to-purple-500",
-      bgClass: "bg-violet-50"
+      classBg: "bg-violet-50",
+      couleurIcone: "text-violet-600",
+      icone: TrendingUp
     },
     {
-      name: "STEM Academy",
-      location: "Marrakech",
-      metric: "93%",
-      description: "Parent satisfaction rate",
+      nom: "Académie STEM",
+      localisation: "Marrakech",
+      metrique: "93%",
+      description: "Taux de satisfaction des parents",
       gradient: "from-pink-600 to-rose-500",
-      bgClass: "bg-pink-50"
+      classBg: "bg-pink-50",
+      couleurIcone: "text-pink-600",
+      icone: Star
     }
   ];
 
-  const stats = [
-    { value: "500+", label: "Schools", icon: "🏫", color: "from-blue-600 to-cyan-500", bgColor: "bg-blue-50" },
-    { value: "150K+", label: "Students", icon: "👨‍🎓", color: "from-violet-600 to-purple-500", bgColor: "bg-violet-50" },
-    { value: "95%", label: "Satisfaction", icon: "⭐", color: "from-yellow-600 to-amber-500", bgColor: "bg-yellow-50" },
-    { value: "24/7", label: "Support", icon: "💪", color: "from-pink-600 to-rose-500", bgColor: "bg-pink-50" }
+  const statistiques = [
+    { 
+      valeur: "500+", 
+      libelle: "Écoles", 
+      icone: School, 
+      couleur: "from-blue-600 to-cyan-500", 
+      couleurBg: "bg-blue-50",
+      couleurIcone: "text-blue-600"
+    },
+    { 
+      valeur: "150K+", 
+      libelle: "Étudiants", 
+      icone: GraduationCap, 
+      couleur: "from-violet-600 to-purple-500", 
+      couleurBg: "bg-violet-50",
+      couleurIcone: "text-violet-600"
+    },
+    { 
+      valeur: "95%", 
+      libelle: "Satisfaction", 
+      icone: Star, 
+      couleur: "from-yellow-600 to-amber-500", 
+      couleurBg: "bg-yellow-50",
+      couleurIcone: "text-yellow-600"
+    },
+    { 
+      valeur: "24/7", 
+      libelle: "Support", 
+      icone: Headphones, 
+      couleur: "from-pink-600 to-rose-500", 
+      couleurBg: "bg-pink-50",
+      couleurIcone: "text-pink-600"
+    }
   ];
 
   return (
     <section 
-      ref={containerRef} 
+      ref={conteneurRef} 
       className="relative min-h-screen bg-gradient-to-b from-gray-50 to-white py-24 overflow-hidden"
     >
-      {/* Content */}
-      <div className="relative z-10 container mx-auto ">
-        {/* Header */}
+      {/* Contenu */}
+      <div className="relative z-10 container mx-auto px-6">
+        {/* En-tête */}
         <motion.div 
           className="text-center mb-20"
-          style={{ y, opacity }}
+          style={{ y, opacity: opacite }}
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -67,7 +109,7 @@ const ImpactSection = () => {
             viewport={{ once: true }}
             className="inline-block px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-medium mb-8"
           >
-            Our Impact
+            Notre Impact
           </motion.span>
 
           <motion.h2 
@@ -76,77 +118,103 @@ const ImpactSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            Transforming Education
+            Transformer l'Éducation
           </motion.h2>
         </motion.div>
 
-        {/* Stats Grid */}
+        {/* Grille des Statistiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="relative group"
-            >
-              <div className={`${stat.bgColor} p-8 rounded-2xl border border-gray-100 shadow-lg hover:shadow-xl transition-all`}>
-                <motion.div
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 10, 0]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="text-4xl mb-4"
-                >
-                  {stat.icon}
-                </motion.div>
-                <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}>
-                  {stat.value}
+          {statistiques.map((stat, index) => {
+            const IconeComponent = stat.icone;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="relative group"
+              >
+                <div className={`${stat.couleurBg} p-8 rounded-2xl border border-gray-100 shadow-lg hover:shadow-xl transition-all`}>
+                  <motion.div
+                    animate={{
+                      scale: [1, 1, 1],
+                      rotate: [0, 1, 0]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    className="mb-4"
+                  >
+                    <div className="inline-flex p-3 rounded-xl bg-white/50 backdrop-blur-sm">
+                      <IconeComponent 
+                        size={32} 
+                        className={`${stat.couleurIcone}`}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                  </motion.div>
+                  <div className={`text-3xl font-bold bg-gradient-to-r ${stat.couleur} bg-clip-text text-transparent mb-2`}>
+                    {stat.valeur}
+                  </div>
+                  <div className="text-gray-600">{stat.libelle}</div>
                 </div>
-                <div className="text-gray-600">{stat.label}</div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Success Stories */}
+        {/* Histoires de Succès */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {successStories.map((story, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="group"
-            >
-              <div className={`${story.bgClass} rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all`}>
-                <div className={`text-5xl font-bold bg-gradient-to-r ${story.gradient} bg-clip-text text-transparent mb-4`}>
-                  {story.metric}
+          {histoiresSucces.map((histoire, index) => {
+            const IconeComponent = histoire.icone;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="group"
+              >
+                <div className={`${histoire.classBg} rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all`}>
+                  {/* Icône et métrique */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`text-5xl font-bold bg-gradient-to-r ${histoire.gradient} bg-clip-text text-transparent`}>
+                      {histoire.metrique}
+                    </div>
+                    <div className="p-3 rounded-lg bg-white/50 backdrop-blur-sm">
+                      <IconeComponent 
+                        size={24} 
+                        className={`${histoire.couleurIcone}`}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                    {histoire.nom}
+                  </h3>
+                  
+                  <div className="flex items-center text-gray-600 mb-4">
+                    <MapPin size={16} className="mr-2 text-gray-500" />
+                    {histoire.localisation}
+                  </div>
+                  
+                  <p className="text-gray-500">
+                    {histoire.description}
+                  </p>
                 </div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                  {story.name}
-                </h3>
-                <div className="text-gray-600 mb-4">
-                  {story.location}
-                </div>
-                <p className="text-gray-500">
-                  {story.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* CTA */}
+        {/* Appel à l'Action */}
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -158,7 +226,7 @@ const ImpactSection = () => {
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all"
           >
-            Join Our Success Story →
+            Rejoignez Notre Histoire de Succès →
           </motion.button>
         </motion.div>
       </div>
@@ -166,4 +234,4 @@ const ImpactSection = () => {
   );
 };
 
-export default ImpactSection;
+export default SectionImpact;
