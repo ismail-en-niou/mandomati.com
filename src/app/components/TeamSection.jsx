@@ -58,6 +58,7 @@ const membresEquipe = [
       linkedin: "https://www.linkedin.com/in/ismail-en-niou-898566275/"
     }
   },
+  
   {
     nom: "Fatima El Asri",
     role: "Développeuse Backend",
