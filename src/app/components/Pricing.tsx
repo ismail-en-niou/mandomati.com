@@ -73,7 +73,7 @@ const Tarifs = () => {
   return (
     <section 
       ref={conteneurRef} 
-      id="tarifs"
+      id="tarification"
       className="relative min-h-screen bg-black py-24 overflow-hidden"
     >
       {/* Motif d'Arrière-plan */}

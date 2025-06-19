@@ -45,7 +45,7 @@ const PourquoiNumerique = () => {
 
   return (
     <section 
-      id="pourquoinumerique"
+      id="pourquoidigital"
       ref={conteneurRef} 
       className="relative min-h-screen bg-[#0A0A0A] text-white overflow-hidden"
     >

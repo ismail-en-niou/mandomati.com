@@ -478,7 +478,7 @@ const Header = () => {
     [0.2, 0.8]
   );
 
-  const menuItems = ['Features', 'whyDigital', 'Pricing','Team' , 'Contact'];
+  const menuItems = ['Fonctionnalités', 'pourquoiDigital', 'Tarification', 'Équipe', 'Contact'];
 
   const handleGetStarted = () => {
     const pricingElement = document.getElementById('pricing');

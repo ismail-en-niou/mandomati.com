@@ -106,7 +106,7 @@ const membresEquipe = [
 
   return (
     <section 
-      id='equipe'
+      id='équipe'
       ref={conteneurRef} 
       className="relative min-h-screen bg-white py-24 overflow-hidden"
     >

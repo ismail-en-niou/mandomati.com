@@ -145,7 +145,7 @@ const FeaturesSection = () => {
   return (
     <section 
       ref={containerRef}
-      id="features"
+      id="fonctionnalités"
       className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden"
     >
       {/* Background Elements */}
